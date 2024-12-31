@@ -8,11 +8,8 @@ export default function AuthPopup({ isOpen, onClose }) {
   const { loginWithGoogle } = useAuth();
 
   const handleGoogleLogin = async () => {
-    if (!user) return;
     try {
-      
       await loginWithGoogle();
-      useRouter().push('/dashboard/perfil');
       onClose();
     } catch (error) {
       console.error('Error en login:', error);

@@ -260,9 +260,6 @@ function Navbar() {
       <AuthPopup 
         isOpen={showAuthPopup} 
         onClose={() => setShowAuthPopup(false)} 
-        redirectUrl={/dashboard/perfil} // Pasar la URL actual
-        // redirectUrl={'/dashboard/perfil'} // Pasar la URL actual
-        
       />
     </>
   )

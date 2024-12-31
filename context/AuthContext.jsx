@@ -25,10 +25,14 @@ export function AuthContextProvider({ children }) {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
-      router.push('/dashboard/perfil');
+      if (result.user) {
+        setUser(result.user);
+        router.push('/dashboard/perfil');
+        return result.user;
+      }
     } catch (error) {
       console.error('Error al iniciar sesión:', error);
+      throw error;
     }
   };
 
