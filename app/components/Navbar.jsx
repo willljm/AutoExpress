@@ -97,7 +97,6 @@ function Navbar() {
               </span>
             </Link>
 
-            {/* Menú de hamburguesa para móvil */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 md:hidden"
