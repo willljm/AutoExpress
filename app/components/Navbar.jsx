@@ -63,7 +63,10 @@ function Navbar() {
       if (result.user) {
         console.log('Login exitoso:', result.user);
         setShowAuthPopup(false);
-        // Ya no redirigimos automáticamente
+        // Esperar un momento antes de redirigir
+        setTimeout(() => {
+          router.push('/dashboard/perfil');
+        }, 500);
       }
     } catch (error) {
       // Mejorar el manejo de errores
@@ -286,7 +289,8 @@ function Navbar() {
       <AuthPopup 
         isOpen={showAuthPopup} 
         onClose={() => setShowAuthPopup(false)} 
-        redirectUrl={pathname} // Pasar la URL actual
+        redirectUrl={pathname} 
+        
       />
     </>
   )

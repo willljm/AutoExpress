@@ -4,9 +4,11 @@ import { Fragment } from 'react'
 import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth';
 import { auth } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 
-export default function AuthPopup({ isOpen, onClose, redirectUrl = '/' }) {
+export default function AuthPopup({ isOpen, onClose }) {
   const router = useRouter();
+  const { user } = useAuth();
 
   const handleGoogleLogin = async () => {
     try {
@@ -23,10 +25,11 @@ export default function AuthPopup({ isOpen, onClose, redirectUrl = '/' }) {
       );
       
       if (result.user) {
-        console.log('Login exitoso:', result.user);
-        onClose(); // Cerrar el popup
-        // Redirigir a la URL original o a la página principal
-        router.push(redirectUrl);
+        onClose();
+        // Esperar un momento antes de redirigir
+        setTimeout(() => {
+          router.push('/dashboard/perfil');
+        }, 500);
       }
     } catch (error) {
       if (error.code === 'auth/popup-closed-by-user') {
