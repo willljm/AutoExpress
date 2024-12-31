@@ -2,13 +2,17 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation';
 
 export default function AuthPopup({ isOpen, onClose }) {
   const { loginWithGoogle } = useAuth();
 
   const handleGoogleLogin = async () => {
+    if (!user) return;
     try {
+      
       await loginWithGoogle();
+      useRouter().push('/dashboard/perfil');
       onClose();
     } catch (error) {
       console.error('Error en login:', error);
