@@ -3,8 +3,6 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { auth } from '@/firebase/config'
 
 export default function AuthPopup({ isOpen, onClose }) {
   const { loginWithGoogle } = useAuth();
