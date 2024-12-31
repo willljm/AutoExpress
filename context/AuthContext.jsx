@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
 import { auth } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
 
@@ -13,31 +13,22 @@ export function AuthContextProvider({ children }) {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        // Redirigir al perfil cuando se detecta un nuevo inicio de sesión
-        router.push('/dashboard/perfil');
-      } else {
-        setUser(null);
-      }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, []);
 
   const loginWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       setUser(result.user);
-      localStorage.setItem('user', JSON.stringify(result.user));
       router.push('/dashboard/perfil');
-      return result.user;
     } catch (error) {
-      console.error('Error al iniciar sesión con Google:', error);
-      throw error;
+      console.error('Error al iniciar sesión:', error);
     }
   };
 
@@ -45,23 +36,15 @@ export function AuthContextProvider({ children }) {
     try {
       await signOut(auth);
       setUser(null);
-      localStorage.removeItem('user');
-      localStorage.removeItem(`favoritos_${user?.uid}`);
       router.push('/');
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
   };
 
-  const value = {
-    user,
-    loginWithGoogle,
-    logout,
-  };
-
   return (
-    <AuthContext.Provider value={value}>
-      {children}
+    <AuthContext.Provider value={{ user, loading, loginWithGoogle, logout }}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

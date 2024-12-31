@@ -1,44 +1,17 @@
 'use client'
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth';
-import { auth } from '@/firebase/config';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext'
 
 export default function AuthPopup({ isOpen, onClose }) {
-  const router = useRouter();
-  const { user } = useAuth();
+  const { loginWithGoogle } = useAuth();
 
   const handleGoogleLogin = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account',
-        display: 'popup'
-      });
-
-      const result = await signInWithPopup(
-        auth, 
-        provider, 
-        browserPopupRedirectResolver
-      );
-      
-      if (result.user) {
-        onClose();
-        // Esperar un momento antes de redirigir
-        setTimeout(() => {
-          router.push('/dashboard/perfil');
-        }, 500);
-      }
+      await loginWithGoogle();
+      onClose();
     } catch (error) {
-      if (error.code === 'auth/popup-closed-by-user') {
-        console.log('Popup cerrado por el usuario');
-      } else if (error.code === 'auth/cancelled-popup-request') {
-        console.log('Solicitud de popup cancelada');
-      } else {
-        console.error('Error en login:', error);
-      }
+      console.error('Error en login:', error);
     }
   };
 

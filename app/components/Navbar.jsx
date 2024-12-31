@@ -13,7 +13,7 @@ import { auth } from '@/firebase/config';
 const montserrat = Montserrat({ subsets: ['latin'], display: 'swap' })
 
 function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, logout, loginWithGoogle } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [showAuthPopup, setShowAuthPopup] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -44,38 +44,10 @@ function Navbar() {
 
   const handleGoogleLogin = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      // Configuración adicional para evitar problemas de popup
-      provider.setCustomParameters({
-        prompt: 'select_account',
-        display: 'popup'
-      });
-
-      // Usar browserPopupRedirectResolver para mejor manejo de popups
-      const result = await signInWithPopup(
-        auth, 
-        provider, 
-        browserPopupRedirectResolver
-      );
-      
-      // Manejar el resultado exitoso
-      if (result.user) {
-        console.log('Login exitoso:', result.user);
-        setShowAuthPopup(false);
-        // Esperar un momento antes de redirigir
-        setTimeout(() => {
-          router.push('/dashboard/perfil');
-        }, 500);
-      }
+      await loginWithGoogle();
+      setShowAuthPopup(false);
     } catch (error) {
-      // Mejorar el manejo de errores
-      if (error.code === 'auth/popup-closed-by-user') {
-        console.log('Popup cerrado por el usuario');
-      } else if (error.code === 'auth/cancelled-popup-request') {
-        console.log('Solicitud de popup cancelada');
-      } else {
-        console.error('Error en login:', error);
-      }
+      console.error('Error en login:', error);
     }
   };
 
