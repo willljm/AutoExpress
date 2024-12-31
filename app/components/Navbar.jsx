@@ -4,11 +4,9 @@ import Image from "next/image"
 import { Montserrat } from 'next/font/google'
 import { useAuth } from '@/context/AuthContext'
 import { useEffect, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation' // Añadir este import
+import { usePathname, useRouter } from 'next/navigation'
 import AuthPopup from './AuthPopup'
 import { motion } from 'framer-motion'
-import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth';
-import { auth } from '@/firebase/config';
 
 const montserrat = Montserrat({ subsets: ['latin'], display: 'swap' })
 
@@ -18,8 +16,8 @@ function Navbar() {
   const [showAuthPopup, setShowAuthPopup] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const pathname = usePathname(); // Obtener la ruta actual
-  const router = useRouter(); // Agregar esta línea
+  const pathname = usePathname();
+  const router = useRouter();
 
   const isDarkPage = ['/', '/dashboard'].includes(pathname);
 
