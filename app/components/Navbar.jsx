@@ -44,10 +44,11 @@ function Navbar() {
 
   const handleGoogleLogin = async () => {
     try {
-      await loginWithGoogle();
-      setShowAuthPopup(false);
+      // Mostrar el popup antes de intentar el login
+      setShowAuthPopup(true);
     } catch (error) {
       console.error('Error en login:', error);
+      setShowAuthPopup(false);
     }
   };
 
@@ -159,10 +160,7 @@ function Navbar() {
                 </div>
               ) : (
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleGoogleLogin();
-                  }}
+                  onClick={() => setShowAuthPopup(true)} // Cambiar aquí
                   className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
                   <img 

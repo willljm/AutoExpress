@@ -13,11 +13,16 @@ export default function AuthPopup({ isOpen, onClose }) {
       onClose();
     } catch (error) {
       console.error('Error en login:', error);
+    } finally {
+      onClose();
     }
   };
 
+  // Asegurarnos que isOpen es booleano
+  const showPopup = Boolean(isOpen);
+
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={showPopup} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
