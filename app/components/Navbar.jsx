@@ -42,14 +42,8 @@ function Navbar() {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      // Mostrar el popup antes de intentar el login
-      setShowAuthPopup(true);
-    } catch (error) {
-      console.error('Error en login:', error);
-      setShowAuthPopup(false);
-    }
+  const handleGoogleLogin = () => {
+    setShowAuthPopup(true);
   };
 
   return (
@@ -160,7 +154,7 @@ function Navbar() {
                 </div>
               ) : (
                 <button
-                  onClick={() => setShowAuthPopup(true)} // Cambiar aquí
+                  onClick={handleGoogleLogin}
                   className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
                   <img 

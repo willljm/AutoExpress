@@ -8,12 +8,19 @@ import { useState, useEffect } from 'react';
 import { cars } from '@/app/components/CardsCar';
 
 export default function PerfilPage() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [reservasActivas, setReservasActivas] = useState([]);
   const [historialReservas, setHistorialReservas] = useState([]);
   const [totalIngresos, setTotalIngresos] = useState(0);
   const [totalReservas, setTotalReservas] = useState(0);
   const [favoritos, setFavoritos] = useState([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/');
+    }
+  }, [user, router]);
 
   useEffect(() => {
     if (!user) return;
@@ -44,9 +51,6 @@ export default function PerfilPage() {
     
   }, [user]);
 
-  const { logout } = useAuth();
-  const router = useRouter();
-
   useEffect(() => {
     // Cargar favoritos
     const favoritosGuardados = localStorage.getItem('favoritos');
@@ -69,7 +73,6 @@ export default function PerfilPage() {
   };
 
   if (!user) {
-    router.push('/login');
     return null;
   }
 
