@@ -5,7 +5,7 @@ import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } fro
 import { auth } from '@/firebase/config';
 import { useRouter } from 'next/navigation';
 
-export default function AuthPopup({ isOpen, onClose }) {
+export default function AuthPopup({ isOpen, onClose, redirectUrl = '/' }) {
   const router = useRouter();
 
   const handleGoogleLogin = async () => {
@@ -25,7 +25,8 @@ export default function AuthPopup({ isOpen, onClose }) {
       if (result.user) {
         console.log('Login exitoso:', result.user);
         onClose(); // Cerrar el popup
-        router.push('/dashboard/perfil');
+        // Redirigir a la URL original o a la página principal
+        router.push(redirectUrl);
       }
     } catch (error) {
       if (error.code === 'auth/popup-closed-by-user') {

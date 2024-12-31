@@ -28,7 +28,7 @@ export function AuthContextProvider({ children }) {
   const logout = async () => {
     try {
       await auth.signOut();
-      router.push('/'); // Redirigir al home después del logout
+      router.push('/'); // Solo redirigimos al home en el logout
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
     }
