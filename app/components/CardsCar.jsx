@@ -6,7 +6,7 @@ import 'react-calendar/dist/Calendar.css';
 import toast from 'react-hot-toast';
 import AuthPopup from './AuthPopup';
 import { motion } from 'framer-motion';
-import { useCars } from '@/context/CarsContext';
+import { useCars } from '@/context/CarsContext'
 import { useAuth } from '@/context/AuthContext';  
 import { FaUsers, FaSuitcase, FaShoppingBag, FaCog, FaDoorOpen, FaUserClock } from 'react-icons/fa';
 import PaymentGateway from './PaymentGateway';

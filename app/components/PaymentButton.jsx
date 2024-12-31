@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import PaymentGateway from './PaymentGateway'
 
 export default function PaymentButton({ total, reservaDetails }) {

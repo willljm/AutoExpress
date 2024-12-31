@@ -5,7 +5,6 @@ import { supabase } from '@/lib/supabase';
 import Sidebar from '../../components/Sidebar';
 import toast from 'react-hot-toast';
 import { useCars } from '@/context/CarsContext';
-
 export default function ManageCarsPage() {
   const { user } = useAuth();
   const [cars, setCars] = useState([]);
