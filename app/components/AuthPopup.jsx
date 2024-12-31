@@ -3,6 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 
 export default function AuthPopup({ isOpen, onClose }) {
   const { loginWithGoogle } = useAuth();
@@ -14,7 +15,12 @@ export default function AuthPopup({ isOpen, onClose }) {
       router.push('/dashboard/perfil');
       onClose();
     } catch (error) {
-      console.error('Error en login:', error);
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('El popup de autenticación fue cerrado antes de completar el inicio de sesión.');
+      } else {
+        console.error('Error en login:', error);
+        toast.error('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
+      }
     }
   };
 
