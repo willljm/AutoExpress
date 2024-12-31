@@ -23,6 +23,10 @@ function Homepage() {
             src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop"
             alt="Fondo" 
             className="object-cover w-full h-full"
+            width={500}  
+            height={300} 
+            unoptimized={process.env.NODE_ENV === 'development'}
+            priority
           />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
