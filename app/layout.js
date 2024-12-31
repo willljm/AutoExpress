@@ -1,6 +1,7 @@
+'use client'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { AuthContextProvider, AuthProvider } from '@/context/AuthContext'
+import { AuthContextProvider } from '@/context/AuthContext'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { Toaster } from 'react-hot-toast'
 
@@ -18,9 +19,9 @@ export default function RootLayout({ children }) {
         <AuthContextProvider>
           <ThemeProvider>
             <Toaster position="top-center" />
-            <AuthProvider>
+            <div suppressHydrationWarning>
               {children}
-            </AuthProvider>
+            </div>
           </ThemeProvider>
         </AuthContextProvider>
       </body>

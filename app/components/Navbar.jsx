@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation' // Añadir este import
 import AuthPopup from './AuthPopup'
 import { motion } from 'framer-motion'
+import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth';
+import { auth } from '@/firebase/config';
 
 const montserrat = Montserrat({ subsets: ['latin'], display: 'swap' })
 
@@ -37,6 +39,39 @@ function Navbar() {
     if (!user) {
       e.preventDefault();
       setShowAuthPopup(true);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const provider = new GoogleAuthProvider();
+      // Configuración adicional para evitar problemas de popup
+      provider.setCustomParameters({
+        prompt: 'select_account',
+        display: 'popup'
+      });
+
+      // Usar browserPopupRedirectResolver para mejor manejo de popups
+      const result = await signInWithPopup(
+        auth, 
+        provider, 
+        browserPopupRedirectResolver
+      );
+      
+      // Manejar el resultado exitoso
+      if (result.user) {
+        console.log('Login exitoso:', result.user);
+        setShowAuthPopup(false);
+      }
+    } catch (error) {
+      // Mejorar el manejo de errores
+      if (error.code === 'auth/popup-closed-by-user') {
+        console.log('Popup cerrado por el usuario');
+      } else if (error.code === 'auth/cancelled-popup-request') {
+        console.log('Solicitud de popup cancelada');
+      } else {
+        console.error('Error en login:', error);
+      }
     }
   };
 
@@ -149,10 +184,18 @@ function Navbar() {
                 </div>
               ) : (
                 <button
-                  onClick={() => setShowAuthPopup(true)}
-                  className="px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleGoogleLogin();
+                  }}
+                  className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                 >
-                  Iniciar Sesión
+                  <img 
+                    src="https://www.google.com/favicon.ico" 
+                    alt="Google" 
+                    className="w-5 h-5"
+                  />
+                  Iniciar con Google
                 </button>
               )}
             </div>
@@ -219,13 +262,18 @@ function Navbar() {
                   </>
                 ) : (
                   <button
-                    onClick={() => {
-                      setShowAuthPopup(true);
-                      setIsMobileMenuOpen(false);
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleGoogleLogin();
                     }}
-                    className="px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
+                    className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700"
                   >
-                    Iniciar Sesión
+                    <img 
+                      src="https://www.google.com/favicon.ico" 
+                      alt="Google" 
+                      className="w-5 h-5"
+                    />
+                    Iniciar con Google
                   </button>
                 )}
               </div>

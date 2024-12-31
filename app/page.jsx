@@ -102,8 +102,9 @@ function Homepage() {
         </div>
       </section>
 
+      {/* BrandSlider section con padding ajustado */}
       <section className="relative bg-gray-50">
-        <div className="pt-24"> 
+        <div className="pt-24"> {/* Aumentado el padding top */}
           <BrandSlider />
         </div>
       </section>
