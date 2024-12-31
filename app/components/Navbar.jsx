@@ -4,7 +4,7 @@ import Image from "next/image"
 import { Montserrat } from 'next/font/google'
 import { useAuth } from '@/context/AuthContext'
 import { useEffect, useState } from 'react'
-import { usePathname } from 'next/navigation' // Añadir este import
+import { usePathname, useRouter } from 'next/navigation' // Añadir este import
 import AuthPopup from './AuthPopup'
 import { motion } from 'framer-motion'
 import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth';
@@ -19,6 +19,7 @@ function Navbar() {
   const [showMenu, setShowMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname(); // Obtener la ruta actual
+  const router = useRouter(); // Agregar esta línea
 
   // Determinar si estamos en una página de fondo oscuro
   const isDarkPage = ['/', '/dashboard'].includes(pathname);
@@ -62,6 +63,8 @@ function Navbar() {
       if (result.user) {
         console.log('Login exitoso:', result.user);
         setShowAuthPopup(false);
+        // Redirigir al perfil después del login exitoso
+        router.push('/dashboard/perfil');
       }
     } catch (error) {
       // Mejorar el manejo de errores
