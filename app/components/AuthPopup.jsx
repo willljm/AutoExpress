@@ -4,8 +4,6 @@ import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import { auth } from '@/firebase/config';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 export default function AuthPopup({ isOpen, onClose }) {
   const { loginWithGoogle } = useAuth();
@@ -13,14 +11,18 @@ export default function AuthPopup({ isOpen, onClose }) {
 
   const handleGoogleLogin = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      console.log(result);
-      router.push('/dashboard/perfil'); // Reemplazar con la ruta de tu aplicación
+      await loginWithGoogle();
+      router.push('/dashboard/perfil');
       onClose();
-    } catch (error) {}
+    } catch (error) {
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('El popup de autenticación fue cerrado antes de completar el inicio de sesión.');
+      } else {
+        console.error('Error en login:', error);
+        toast.error('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
+      }
+    }
   };
-
 
   return (
     <Transition appear show={isOpen} as={Fragment}>

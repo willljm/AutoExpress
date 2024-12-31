@@ -19,7 +19,6 @@ function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const isDarkPage = ['/', '/dashboard'].includes(pathname);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,6 +41,9 @@ function Navbar() {
 
   const handleGoogleLogin = () => {
     setShowAuthPopup(true);
+    console.log('handleGoogleLogin');
+    console.log(router);
+    router.push('/dashboard/perfil');
   };
 
   return (
