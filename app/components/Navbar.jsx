@@ -21,7 +21,6 @@ function Navbar() {
   const pathname = usePathname(); // Obtener la ruta actual
   const router = useRouter(); // Agregar esta línea
 
-  // Determinar si estamos en una página de fondo oscuro
   const isDarkPage = ['/', '/dashboard'].includes(pathname);
 
   useEffect(() => {
