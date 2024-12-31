@@ -15,23 +15,21 @@ function Homepage() {
     <div>
       <Navbar />
 
-      {/* Hero Section con diseño minimalista y degradado sutil */}
       <section className="relative min-h-screen">
-        {/* Imagen de fondo con overlay simple */}
         <div className="absolute inset-0 z-0">
           <Image
             src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2083&auto=format&fit=crop"
             alt="Fondo" 
             className="object-cover w-full h-full"
-            width={500}  
-            height={300} 
-            unoptimized={process.env.NODE_ENV === 'development'}
+            width={1920}  
+            height={1080} 
+            quality={100}  
             priority
+            unoptimized={process.env.NODE_ENV === 'development'}
           />
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
 
-        {/* Contenido centrado */}
         <div className="relative z-10 flex items-center justify-center h-screen">
           <div className="max-w-4xl px-4 mx-auto text-center">
             <motion.h1 
@@ -87,15 +85,14 @@ function Homepage() {
           </div>
         </div>
 
-        {/* Wave separator */}
         <div className="absolute left-0 right-0 -bottom-7">
           <svg 
             xmlns="http://www.w3.org/2000/svg" 
             viewBox="0 0 1440 320" 
             className="w-full"
             preserveAspectRatio="none"
-            style={{ height: '150px' }}  // Altura ajustada
-          >
+            style={{ height: '150px' }}  
+            >
             <path 
               fill="#F9FAFB" 
               fillOpacity="1" 
@@ -105,9 +102,8 @@ function Homepage() {
         </div>
       </section>
 
-      {/* BrandSlider section con padding ajustado */}
       <section className="relative bg-gray-50">
-        <div className="pt-24"> {/* Aumentado el padding top */}
+        <div className="pt-24"> 
           <BrandSlider />
         </div>
       </section>
