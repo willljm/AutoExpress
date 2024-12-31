@@ -35,7 +35,7 @@ export function AuthProvider({ children }) {
       setUser(null)
       localStorage.removeItem('user')
       localStorage.removeItem(`favoritos_${user?.uid}`)
-      router.push('/')
+      router.push('/') // Redirigir a la página de inicio
     } catch (error) {
       console.error('Error al cerrar sesión:', error)
     }

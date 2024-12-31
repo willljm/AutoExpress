@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useState } from 'react';
 
 export default function Sidebar() {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
   const isAdmin = user?.email === 'wilmezaalfaro@gmail.com';
@@ -14,16 +14,6 @@ export default function Sidebar() {
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleLogout = async () => {
-    try {
-      await logout();
-      router.push('/');
-      toast.success('¡Hasta pronto!');
-    } catch (error) {
-      toast.error('Error al cerrar sesión');
-    }
   };
 
   const navLinks = [
@@ -91,11 +81,11 @@ export default function Sidebar() {
                   referrerPolicy="no-referrer"
                 />
               ) : (
-                <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 font-bold text-white bg-blue-600 rounded-full">
+                <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 font-bold text-white bg-blue-600 rounded-full">
                   {user?.displayName?.charAt(0) || "U"}
                 </div>
               )}
-              <div className="min-w-0 flex-1"> {/* Añadido min-w-0 y flex-1 */}
+              <div className="flex-1 min-w-0"> {/* Añadido min-w-0 y flex-1 */}
                 <p className="font-medium truncate">{user?.displayName || "Usuario"}</p>
                 <p className="text-sm text-gray-500 truncate">{user?.email}</p>
               </div>
@@ -144,17 +134,35 @@ export default function Sidebar() {
             )}
           </nav>
 
-          {/* Botón de cerrar sesión */}
+          {/* Tarjeta de atención al cliente */}
           <div className="p-4 border-t">
-            <button
-              onClick={handleLogout}
-              className="flex items-center justify-center w-full p-2 text-red-600 rounded-lg hover:bg-red-50"
-            >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
-              <span>Cerrar sesión</span>
-            </button>
+            <div className="relative p-4 overflow-hidden rounded-lg shadow-md bg-gradient-to-br from-blue-500 to-blue-600">
+              <div className="relative z-10">
+                <h3 className="flex items-center text-base font-semibold text-white">
+                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                  </svg>
+                  Atención al Cliente
+                </h3>
+                <p className="flex items-center mt-3 text-sm text-white/90">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                  +1 234 567 890
+                </p>
+                <p className="flex items-center mt-2 text-sm text-white/90">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  soporte@autoexpress.com
+                </p>
+              </div>
+              <div className="absolute top-0 right-0 w-24 h-24 transform translate-x-8 -translate-y-8">
+                <svg className="w-full h-full text-blue-400/20" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56-.35-.12-.74-.03-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z" />
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       </div>
