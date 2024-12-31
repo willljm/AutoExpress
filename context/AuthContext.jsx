@@ -22,7 +22,6 @@ export function AuthProvider({ children }) {
       const result = await signInWithPopup(auth, provider)
       setUser(result.user)
       localStorage.setItem('user', JSON.stringify(result.user))
-      router.push('/dashboard/perfil') // Asegúrate de redirigir después del inicio de sesión
       return result.user
     } catch (error) {
       console.error('Error al iniciar sesión con Google:', error)
