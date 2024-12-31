@@ -7,7 +7,7 @@ import { CarsProvider } from "@/context/CarsContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "AutoExpress",
+  title: "AutoExpress - Donde rentar tus sueños",
   description: "AutoExpress - Tu concesionario de confianza",
 };
 

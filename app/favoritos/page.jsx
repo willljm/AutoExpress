@@ -7,15 +7,23 @@ import Navbar from '../components/Navbar'
 import Loading from '../components/Loading'
 import toast, { Toaster } from 'react-hot-toast'
 import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation'; // Importar useRouter
 import { supabase } from '@/lib/supabase';
 
 function FavoritePage() {
   const { user } = useAuth();
+  const router = useRouter(); // Usar useRouter
   const [isLoading, setIsLoading] = useState(true);
   const [favoritos, setFavoritos] = useState([]);
   const [carsFavoritos, setCarsFavoritos] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+      router.push('/login');
+      return;
+    }
+
     const loadFavoritos = async () => {
       try {
         setIsLoading(true);
@@ -43,7 +51,7 @@ function FavoritePage() {
     };
 
     loadFavoritos();
-  }, []);
+  }, [user, router]);
 
   const removeFavorito = (id) => {
     try {
@@ -118,7 +126,6 @@ function FavoritePage() {
         )}
       </div>
       <Footer />
-
     </div>
   )
 }
