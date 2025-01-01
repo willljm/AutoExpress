@@ -16,9 +16,12 @@ export default function AuthPopup({ isOpen, onClose }) {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       if (result.user) {
-        router.push('/dashboard/perfil');
         onClose();
-        toast.success('¡Bienvenido!');
+        toast.success('¡Bienvenido!', {
+          duration: 3000,
+          position: 'top-right',
+          icon: '👋',
+        });
       }
     } catch (error) {
       console.error('Error en login:', error);

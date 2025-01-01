@@ -24,12 +24,11 @@ export function AuthProvider({ children }) {
       } else {
         setUser(null)
         localStorage.removeItem('user')
-        router.push('/')
       }
     })
 
     return () => unsubscribe()
-  }, [router])
+  }, [])
 
   const logout = async () => {
     try {
