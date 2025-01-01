@@ -4,7 +4,7 @@ import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { auth } from '@/firebase/config'
-import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
 import toast from 'react-hot-toast'
 
 export default function AuthPopup({ isOpen, onClose }) {
@@ -14,28 +14,12 @@ export default function AuthPopup({ isOpen, onClose }) {
     e.preventDefault();
     try {
       const provider = new GoogleAuthProvider();
-      // Usar browserPopupRedirectResolver para manejar problemas de COOP
-      const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
-      if (result.user) {
-        // Esperar un momento antes de cerrar y mostrar el toast
-        setTimeout(() => {
-          onClose();
-          toast.success('¡Bienvenido!', {
-            duration: 3000,
-            position: 'top-right',
-            icon: '👋',
-          });
-        }, 500);
-      }
+      await signInWithRedirect(auth, provider);
+      // El resto del manejo se hará en el AuthContext con getRedirectResult
+      onClose();
     } catch (error) {
       console.error('Error en login:', error);
-      if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('Inicio de sesión cancelado');
-      } else if (error.code === 'auth/popup-blocked') {
-        toast.error('Por favor, permite las ventanas emergentes para iniciar sesión');
-      } else {
-        toast.error('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
-      }
+      toast.error('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
     }
   };
 

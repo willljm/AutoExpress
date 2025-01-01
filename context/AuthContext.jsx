@@ -3,12 +3,12 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
-  GoogleAuthProvider, 
-  signInWithPopup, 
+  getRedirectResult,
   signOut, 
   onAuthStateChanged 
 } from 'firebase/auth'
 import { auth } from '@/firebase/config'
+import toast from 'react-hot-toast'
 
 const AuthContext = createContext()
 
@@ -17,6 +17,19 @@ export function AuthProvider({ children }) {
   const router = useRouter()
 
   useEffect(() => {
+    // Manejar el resultado de la redirección
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result?.user) {
+          setUser(result.user)
+          localStorage.setItem('user', JSON.stringify(result.user))
+          toast.success('¡Bienvenido!')
+        }
+      })
+      .catch((error) => {
+        console.error('Error al procesar redirección:', error)
+      })
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser)
