@@ -3,8 +3,10 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
-  onAuthStateChanged,
-  signOut
+  GoogleAuthProvider, 
+  signInWithPopup, 
+  signOut, 
+  onAuthStateChanged 
 } from 'firebase/auth'
 import { auth } from '@/firebase/config'
 
@@ -13,6 +15,22 @@ const AuthContext = createContext()
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const router = useRouter()
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser)
+        localStorage.setItem('user', JSON.stringify(currentUser))
+        // Redirigir aquí después de que el usuario esté autenticado
+        router.push('/dashboard/perfil')
+      } else {
+        setUser(null)
+        localStorage.removeItem('user')
+      }
+    })
+
+    return () => unsubscribe()
+  }, [router])
 
   const logout = async () => {
     try {
@@ -25,20 +43,6 @@ export function AuthProvider({ children }) {
       console.error('Error al cerrar sesión:', error)
     }
   }
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser)
-        localStorage.setItem('user', JSON.stringify(currentUser))
-      } else {
-        setUser(null)
-        localStorage.removeItem('user')
-      }
-    })
-
-    return () => unsubscribe()
-  }, [])
 
   const value = {
     user,
