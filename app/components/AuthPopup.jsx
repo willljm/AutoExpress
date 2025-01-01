@@ -10,7 +10,8 @@ import toast from 'react-hot-toast'
 export default function AuthPopup({ isOpen, onClose }) {
   const router = useRouter();
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault(); // Prevenir el comportamiento por defecto
     try {
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
