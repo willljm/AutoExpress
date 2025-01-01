@@ -1,25 +1,37 @@
 'use client'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { useAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
+import { Fragment, useState } from 'react'
 import { auth } from '@/firebase/config'
-import { GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import toast from 'react-hot-toast'
 
 export default function AuthPopup({ isOpen, onClose }) {
-  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleGoogleLogin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithRedirect(auth, provider);
-      // El resto del manejo se hará en el AuthContext con getRedirectResult
-      onClose();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+      
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
+        toast.success('¡Bienvenido!');
+        onClose();
+      }
     } catch (error) {
       console.error('Error en login:', error);
-      toast.error('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
+      if (error.code === 'auth/popup-closed-by-user') {
+        toast.error('Ventana cerrada. Intenta de nuevo.');
+      } else {
+        toast.error('Error al iniciar sesión');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,14 +77,17 @@ export default function AuthPopup({ isOpen, onClose }) {
                 <div className="mt-6 space-y-4">
                   <button
                     onClick={handleGoogleLogin}
-                    className="flex items-center justify-center w-full gap-3 px-4 py-2 text-sm font-medium text-gray-700 transition-colors bg-white border border-gray-300 rounded-lg hover:bg-gray-50"
+                    disabled={isLoading}
+                    className={`flex items-center justify-center w-full gap-3 px-4 py-2 text-sm font-medium transition-colors bg-white border border-gray-300 rounded-lg ${
+                      isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+                    }`}
                   >
                     <img 
                       src="https://www.google.com/favicon.ico" 
                       alt="Google" 
                       className="w-5 h-5"
                     />
-                    Continuar con Google
+                    {isLoading ? 'Iniciando sesión...' : 'Continuar con Google'}
                   </button>
 
                   <button
