@@ -3,16 +3,18 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
+import { auth } from '@/firebase/config'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import toast from 'react-hot-toast'
 
 export default function AuthPopup({ isOpen, onClose }) {
-  const { loginWithGoogle } = useAuth();
   const router = useRouter();
 
   const handleGoogleLogin = async () => {
     try {
-      const result = await loginWithGoogle();
-      if (result) {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      if (result.user) {
         router.push('/dashboard/perfil');
         onClose();
         toast.success('¡Bienvenido!');

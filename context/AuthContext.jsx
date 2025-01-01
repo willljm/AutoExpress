@@ -3,11 +3,8 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  signOut, 
   onAuthStateChanged,
-  browserPopupRedirectResolver // Añadir este import
+  signOut
 } from 'firebase/auth'
 import { auth } from '@/firebase/config'
 
@@ -16,20 +13,6 @@ const AuthContext = createContext()
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const router = useRouter()
-
-  const loginWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider()
-      // Usar browserPopupRedirectResolver para manejar el popup correctamente
-      const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver)
-      setUser(result.user)
-      localStorage.setItem('user', JSON.stringify(result.user))
-      return result.user
-    } catch (error) {
-      console.error('Error al iniciar sesión con Google:', error)
-      throw error
-    }
-  }
 
   const logout = async () => {
     try {
@@ -59,7 +42,6 @@ export function AuthProvider({ children }) {
 
   const value = {
     user,
-    loginWithGoogle,
     logout
   }
 
