@@ -21,11 +21,10 @@ export function AuthProvider({ children }) {
       if (currentUser) {
         setUser(currentUser)
         localStorage.setItem('user', JSON.stringify(currentUser))
-        // Redirigir aquí después de que el usuario esté autenticado
-        router.push('/dashboard/perfil')
       } else {
         setUser(null)
         localStorage.removeItem('user')
+        router.push('/')
       }
     })
 
