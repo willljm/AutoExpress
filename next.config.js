@@ -3,6 +3,7 @@ const nextConfig = {
   images: {
     domains: [
       'lh3.googleusercontent.com',
+      'www.google.com',
       'www.sixt.com',
       'vvzgamnsmfhcoyntclxw.supabase.co',
       'images.unsplash.com'
@@ -22,6 +23,19 @@ const nextConfig = {
       }
     ],
   },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups'
+          }
+        ],
+      },
+    ]
+  }
 }
 
 module.exports = nextConfig

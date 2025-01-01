@@ -4,24 +4,28 @@ import { Fragment } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import { auth } from '@/firebase/config'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup, browserPopupRedirectResolver } from 'firebase/auth'
 import toast from 'react-hot-toast'
 
 export default function AuthPopup({ isOpen, onClose }) {
   const router = useRouter();
 
   const handleGoogleLogin = async (e) => {
-    e.preventDefault(); // Prevenir el comportamiento por defecto
+    e.preventDefault();
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
+      // Usar browserPopupRedirectResolver para manejar problemas de COOP
+      const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
       if (result.user) {
-        onClose();
-        toast.success('¡Bienvenido!', {
-          duration: 3000,
-          position: 'top-right',
-          icon: '👋',
-        });
+        // Esperar un momento antes de cerrar y mostrar el toast
+        setTimeout(() => {
+          onClose();
+          toast.success('¡Bienvenido!', {
+            duration: 3000,
+            position: 'top-right',
+            icon: '👋',
+          });
+        }, 500);
       }
     } catch (error) {
       console.error('Error en login:', error);
