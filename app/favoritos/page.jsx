@@ -19,8 +19,8 @@ function FavoritePage() {
 
   useEffect(() => {
     if (!user) {
-      // Redirigir al usuario a la página de inicio si no está autenticado
-      router.push('/');
+      // Redirigir al usuario a la página de inicio de sesión si no está autenticado
+      router.push('/login');
       return;
     }
 

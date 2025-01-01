@@ -11,14 +11,19 @@ export default function AuthPopup({ isOpen, onClose }) {
 
   const handleGoogleLogin = async () => {
     try {
-      await loginWithGoogle();
-      router.push('/dashboard/perfil');
-      onClose();
+      const result = await loginWithGoogle();
+      if (result) {
+        router.push('/dashboard/perfil');
+        onClose();
+        toast.success('¡Bienvenido!');
+      }
     } catch (error) {
+      console.error('Error en login:', error);
       if (error.code === 'auth/popup-closed-by-user') {
-        toast.error('El popup de autenticación fue cerrado antes de completar el inicio de sesión.');
+        toast.error('Inicio de sesión cancelado');
+      } else if (error.code === 'auth/popup-blocked') {
+        toast.error('Por favor, permite las ventanas emergentes para iniciar sesión');
       } else {
-        console.error('Error en login:', error);
         toast.error('Error al iniciar sesión. Por favor, inténtalo de nuevo.');
       }
     }

@@ -6,7 +6,8 @@ import {
   GoogleAuthProvider, 
   signInWithPopup, 
   signOut, 
-  onAuthStateChanged 
+  onAuthStateChanged,
+  browserPopupRedirectResolver // Añadir este import
 } from 'firebase/auth'
 import { auth } from '@/firebase/config'
 
@@ -19,7 +20,8 @@ export function AuthProvider({ children }) {
   const loginWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider()
-      const result = await signInWithPopup(auth, provider)
+      // Usar browserPopupRedirectResolver para manejar el popup correctamente
+      const result = await signInWithPopup(auth, provider, browserPopupRedirectResolver)
       setUser(result.user)
       localStorage.setItem('user', JSON.stringify(result.user))
       return result.user
@@ -35,7 +37,7 @@ export function AuthProvider({ children }) {
       setUser(null)
       localStorage.removeItem('user')
       localStorage.removeItem(`favoritos_${user?.uid}`)
-      router.push('/') // Redirigir a la página de inicio
+      router.push('/')
     } catch (error) {
       console.error('Error al cerrar sesión:', error)
     }

@@ -15,9 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Configurar auth para usar el resolver de popup del navegador
+// Configuraciones adicionales para el auth
 auth.useDeviceLanguage();
-auth.settings.appVerificationDisabledForTesting = true;
 
-// Remover la inicialización de analytics por completo
-export { app, auth };
+export { auth };
